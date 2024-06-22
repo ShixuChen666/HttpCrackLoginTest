@@ -10,16 +10,25 @@ def get_password():
              'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
              'A','B',"C", 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
              'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+
+    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count()-2)
     for i in range(3,10):
-        combine(list1,i)
+        chunk_size = 10000
+        combinations = itertools.combinations(list1,i)
+        for chuck in iter(lambda :list(itertools.islice(combinations,chunk_size)),[]):
+            pool.map(combine,chuck)
+
+
+    pool.close()
+    pool.join()
 
 
 
-
-def combine(temp_list, n):
-    for c in combinations(temp_list, n):
-        pwd_str = ''.join(c)
-        login(pwd_str)
+def combine(c):
+    pwd_str = ''.join(c)
+    login(pwd_str)
+    # print(pwd_str)
 
 
 
