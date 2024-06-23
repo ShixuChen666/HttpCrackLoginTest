@@ -37,3 +37,5 @@ def login(password):
     response = requests.post('http://192.168.18.1/zapi', headers=headers, json=data, verify=False)
     if response.is_redirect == True:
         print(password)
+    else:
+        response.close()
